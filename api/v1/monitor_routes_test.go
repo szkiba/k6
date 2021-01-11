@@ -1,7 +1,7 @@
 /*
  *
  * k6 - a next-generation load testing tool
- * Copyright (C) 2016 Load Impact
+ * Copyright (C) 2021 Load Impact
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as
@@ -56,6 +56,7 @@ func TestGetMonitor(t *testing.T) {
 	rw := httptest.NewRecorder()
 	NewHandler().ServeHTTP(rw, newRequestWithEngine(engine, "GET", "/v1/monitor", nil))
 	res := rw.Result()
+
 	assert.Equal(t, http.StatusOK, res.StatusCode)
 	assert.Equal(t, "text/plain; charset=utf-8", res.Header.Get("Content-Type"))
 
@@ -71,4 +72,6 @@ func TestGetMonitor(t *testing.T) {
 			assert.Equal(t, name, metrics[name].GetName())
 		}
 	})
+
+	assert.NoError(t, res.Body.Close())
 }
